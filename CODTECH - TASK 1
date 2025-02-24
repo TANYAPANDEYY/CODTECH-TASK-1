@@ -1,0 +1,34 @@
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lsa import LsaSummarizer
+import nltk
+
+# Download necessary NLTK data
+nltk.download('punkt')
+
+def summarize_text(text, num_sentences=3):
+    """
+    Summarizes the input text using LSA (Latent Semantic Analysis) technique.
+    
+    :param text: The input article or lengthy text.
+    :param num_sentences: Number of sentences for the summary.
+    :return: A summarized version of the text.
+    """
+    parser = PlaintextParser.from_string(text, Tokenizer("english"))
+    summarizer = LsaSummarizer()
+
+    summary = summarizer(parser.document, num_sentences)
+    return " ".join(str(sentence) for sentence in summary)
+
+if _name_ == "_main_":
+    # Example text to summarize
+    input_text = """Natural Language Processing (NLP) is a field of artificial intelligence that 
+    focuses on the interaction between computers and humans through language. It involves various 
+    techniques such as tokenization, stemming, lemmatization, and named entity recognition. One of 
+    the applications of NLP is text summarization, which helps in reducing large texts into shorter, 
+    meaningful summaries while retaining essential information."""
+
+    print("Original Text:")
+    print(input_text)
+    print("\nSummarized Text:")
+    print(summarize_text(input_text, num_sentences=2))
